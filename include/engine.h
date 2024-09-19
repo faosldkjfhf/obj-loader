@@ -1,6 +1,9 @@
 #pragma once
 
+#include "index_buffer.h"
 #include "shader_program.h"
+#include "vertex_array.h"
+#include "vertex_buffer.h"
 #include "window.h"
 #include <memory>
 #include <vector>
@@ -23,8 +26,10 @@ private:
 
   std::vector<float> _vertices;
   std::vector<unsigned int> _indices;
-  unsigned int _vbo;
-  unsigned int _vao;
+
+  std::shared_ptr<VertexArray> _vao;
+  std::shared_ptr<VertexBuffer> _vbo;
+  std::shared_ptr<IndexBuffer> _ibo;
 
   float _deltaTime;
 };

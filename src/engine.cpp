@@ -31,18 +31,16 @@ void Engine::InitializeBuffers() {
   _vertices = {
       -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f,
   };
-
   _indices = {0, 1, 2};
 
-  glGenVertexArrays(1, &_vao);
-  glBindVertexArray(_vao);
-  glGenBuffers(1, &_vbo);
-  glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-  glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float),
-               _vertices.data(), GL_STATIC_DRAW);
+  _vao = std::make_shared<VertexArray>();
+  _vbo = std::make_shared<VertexBuffer>(_vertices.data(), _vertices.size());
+  _ibo = std::make_shared<IndexBuffer>(_indices.data(), _indices.size());
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-  glEnableVertexAttribArray(0);
+  VertexBufferLayout layout;
+  layout.Push<float>(3);
+
+  _vao->AddBuffer(*_vbo, layout);
 }
 
 void Engine::Input() {
@@ -59,8 +57,8 @@ void Engine::Render() {
 
   // Render loop goes here
   _shaderProgram->Bind();
-  glBindVertexArray(_vao);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  _vao->Bind();
+  glDrawElements(GL_TRIANGLES, _ibo->Count(), GL_UNSIGNED_INT, nullptr);
 
   _window->SwapBuffers();
 }
