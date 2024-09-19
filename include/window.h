@@ -12,7 +12,10 @@ public:
   void Init();
   void SwapBuffers();
   bool WindowShouldClose() const;
-  void PollEvents() const;
+
+  void Close();
+
+  GLFWwindow *GetWindow() const { return _window; }
 
 private:
   int _width;

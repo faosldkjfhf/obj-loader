@@ -1,5 +1,10 @@
 #include "window.h"
+#include <GLFW/glfw3.h>
 #include <iostream>
+
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+  glViewport(0, 0, width, height);
+}
 
 Window::Window() : _width(640), _height(480) { Init(); }
 
@@ -27,16 +32,21 @@ void Window::Init() {
 
   glfwMakeContextCurrent(_window);
 
+  // initialize glew
   GLenum err = glewInit();
   if (err != GLEW_OK) {
     std::cout << "ERROR: " << glewGetErrorString(err) << std::endl;
   }
+
+  // set viewport, update on resize window
+  glViewport(0, 0, _width, _height);
+  glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
 }
 
 bool Window::WindowShouldClose() const {
   return glfwWindowShouldClose(_window);
 }
 
-void Window::PollEvents() const { glfwPollEvents(); }
+void Window::Close() { glfwSetWindowShouldClose(_window, true); }
 
 void Window::SwapBuffers() { glfwSwapBuffers(_window); }
