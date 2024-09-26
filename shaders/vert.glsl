@@ -1,9 +1,11 @@
 #version 410 core
 
 layout(location = 0) in vec3 pos;
-out vec3 v_Pos;
+layout(location = 1) in vec3 color;
+
+out vec3 v_Color;
 
 void main() {
-    v_Pos = vec3(pos);
+    v_Color = color;
     gl_Position = vec4(pos, 1.0);
 }

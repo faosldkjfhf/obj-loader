@@ -19,3 +19,15 @@ void ShaderProgram::AttachShaders(std::vector<Shader> shaders) {
     glDeleteShader(shader.Location());
   }
 }
+
+void ShaderProgram::SetBool(const std::string &name, bool value) const {
+  glUniform1i(glGetUniformLocation(_id, name.c_str()), (int)value);
+}
+
+void ShaderProgram::SetInt(const std::string &name, int value) const {
+  glUniform1i(glGetUniformLocation(_id, name.c_str()), value);
+}
+
+void ShaderProgram::SetFloat(const std::string &name, float value) const {
+  glUniform1f(glGetUniformLocation(_id, name.c_str()), value);
+}

@@ -28,9 +28,8 @@ void Engine::Loop() {
 }
 
 void Engine::InitializeBuffers() {
-  _vertices = {
-      -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f,
-  };
+  _vertices = {-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.5f, -0.5f, 0.0f,
+               0.0f,  1.0f,  0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f,  1.0f};
   _indices = {0, 1, 2};
 
   _vao = std::make_shared<VertexArray>();
@@ -38,6 +37,7 @@ void Engine::InitializeBuffers() {
   _ibo = std::make_shared<IndexBuffer>(_indices.data(), _indices.size());
 
   VertexBufferLayout layout;
+  layout.Push<float>(3);
   layout.Push<float>(3);
 
   _vao->AddBuffer(*_vbo, layout);
