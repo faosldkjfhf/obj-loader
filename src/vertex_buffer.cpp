@@ -1,10 +1,10 @@
 #include "vertex_buffer.h"
 #include <GL/glew.h>
 
-VertexBuffer::VertexBuffer(const void *data, unsigned int count) {
+VertexBuffer::VertexBuffer(const void *data, unsigned int count, float size) {
   glGenBuffers(1, &_id);
   Bind();
-  glBufferData(GL_ARRAY_BUFFER, count * sizeof(float), data, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, count * size, data, GL_STATIC_DRAW);
 }
 
 VertexBuffer::~VertexBuffer() { glDeleteBuffers(1, &_id); }

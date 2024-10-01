@@ -2,7 +2,7 @@
 
 class VertexBuffer {
 public:
-  VertexBuffer(const void *data, unsigned int count);
+  VertexBuffer(const void *data, unsigned int count, float size);
   ~VertexBuffer();
   void Bind() const;
   void Unbind() const;

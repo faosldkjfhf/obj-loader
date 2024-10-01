@@ -1,21 +1,31 @@
 #pragma once
 
+#include "face.h"
 #include <GL/glew.h>
 #include <vector>
 
+enum SizeType {
+  FLOAT,
+  UNSIGNED_INT,
+  UNSIGNED_BYTE,
+  FACE,
+};
+
 struct VertexBufferElement {
-  unsigned int type;
+  SizeType type;
   unsigned int count;
   bool normalized;
 
-  static unsigned int Size(unsigned int type) {
+  static unsigned int Size(SizeType type) {
     switch (type) {
-    case GL_FLOAT:
-      return 4;
-    case GL_UNSIGNED_INT:
-      return 4;
-    case GL_UNSIGNED_BYTE:
+    case FLOAT:
+      return sizeof(float);
+    case UNSIGNED_INT:
+      return sizeof(unsigned int);
+    case UNSIGNED_BYTE:
       return 1;
+    case FACE:
+      return sizeof(Face);
     }
 
     return 0;

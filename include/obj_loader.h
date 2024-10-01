@@ -1,5 +1,6 @@
 #pragma once
 
+#include "face.h"
 #include <fstream>
 #include <glm/glm.hpp>
 #include <iostream>
@@ -10,11 +11,10 @@
 class ObjLoader {
 public:
   ObjLoader() = default;
-  ~ObjLoader() = delete;
+  ~ObjLoader() {}
 
-  static void LoadObj(std::vector<glm::vec3> &outVertices,
-                      std::vector<glm::vec2> &outTextures,
-                      std::vector<glm::vec3> &outNormals,
+  static void LoadObj(std::vector<Face> &outVertices,
+                      std::vector<unsigned int> &outIndices,
                       const std::string &filename) {
     std::ifstream inFile(filename);
 
@@ -29,6 +29,9 @@ public:
 
     std::string line = "";
     while (std::getline(inFile, line)) {
+      if (line == "") {
+        break;
+      }
       // split line by space
       std::stringstream ss(line);
       std::string token = "";
@@ -51,9 +54,43 @@ public:
                                     std::stof(tokens.at(2)),
                                     std::stof(tokens.at(3))));
       } else if (first == "mtllib") {
+        // Load material file
+      } else if (first == "f") {
+        // Face
+        std::vector<unsigned int> vPos;
+        std::vector<unsigned int> tPos;
+        std::vector<unsigned int> nPos;
+
+        for (int i = 1; i < 4; i++) {
+          std::stringstream ss(tokens.at(i));
+          std::string token = "";
+          std::vector<std::string> values;
+          char delimiter = '/';
+          while (std::getline(ss, token, delimiter)) {
+            values.push_back(token);
+          }
+
+          vPos.push_back(std::stoul(values[0]) - 1);
+          tPos.push_back(std::stoul(values[1]) - 1);
+          nPos.push_back(std::stoul(values[2]) - 1);
+        }
+
+        for (int i = 0; i < vPos.size(); i++) {
+          Face f(vertices[vPos[i]], textures[tPos[i]], normals[nPos[i]]);
+          auto iter = std::find(outVertices.begin(), outVertices.end(), f);
+          if (iter != outVertices.end()) {
+            std::cout << "found" << std::endl;
+            outIndices.push_back(iter - outVertices.begin());
+          } else {
+            outVertices.push_back(f);
+            unsigned int newIndex = outVertices.size() - 1;
+            outIndices.push_back(newIndex);
+          }
+        }
       }
     }
 
+    std::cout << "Loaded " << filename << std::endl;
     inFile.close();
   }
 };

@@ -7,7 +7,7 @@ CFLAGS := -std=c++20
 INCLUDES := -I./include -I./thirdparty/glm
 LIBS := `pkg-config --libs --cflags glfw3` -lGLEW -lGL -lGLU
 SOURCES := main.cpp window.cpp engine.cpp shader_program.cpp shader.cpp vertex_array.cpp vertex_buffer.cpp
-SOURCES += vertex_buffer_layout.cpp index_buffer.cpp obj_loader.cpp
+SOURCES += vertex_buffer_layout.cpp index_buffer.cpp obj_loader.cpp face.cpp camera.cpp
 OBJECTS := $(addprefix $(OBJDIR)/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))
 
 $(ODIR)/prog: $(OBJECTS)
