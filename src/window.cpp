@@ -41,6 +41,9 @@ void Window::Init() {
   // set viewport, update on resize window
   glViewport(0, 0, _width, _height);
   glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
+
+  // mouse input mode
+  glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 bool Window::WindowShouldClose() const {

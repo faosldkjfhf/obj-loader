@@ -22,6 +22,9 @@ public:
   void Update();
   void Render();
 
+  void tabKeyCallback(GLFWwindow *window, int key, int scancode, int action,
+                      int mods);
+
 private:
   std::shared_ptr<Window> _window;
   std::shared_ptr<Camera> _camera;
@@ -39,4 +42,6 @@ private:
   glm::mat4 _projection;
 
   float _deltaTime;
+  float _currentFrame;
+  bool _wireframeMode;
 };

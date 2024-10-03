@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+// TODO: Currently no support for textures
+
 class ObjLoader {
 public:
   ObjLoader() = default;
@@ -30,8 +32,9 @@ public:
     std::string line = "";
     while (std::getline(inFile, line)) {
       if (line == "") {
-        break;
+        continue;
       }
+
       // split line by space
       std::stringstream ss(line);
       std::string token = "";
@@ -79,7 +82,6 @@ public:
           Face f(vertices[vPos[i]], textures[tPos[i]], normals[nPos[i]]);
           auto iter = std::find(outVertices.begin(), outVertices.end(), f);
           if (iter != outVertices.end()) {
-            std::cout << "found" << std::endl;
             outIndices.push_back(iter - outVertices.begin());
           } else {
             outVertices.push_back(f);
